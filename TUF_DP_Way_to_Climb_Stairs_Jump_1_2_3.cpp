@@ -3,6 +3,8 @@
 
 using namespace std;
 
+// This problem is same as Fibbonaacci Series Problem
+
 /// Type1 for Problem 1: Using Recursion
 int countNoOfStairs_2_Steps(int index)
 {
@@ -132,7 +134,7 @@ int countNoOfStairs_3_Steps_Tabulation(int n)
 int main()
 {
 
-    /// Problem 1 with 2 Steps on Stairs 0 and 1
+    /// Problem 1 with 2 Steps on Stairs 0 and 1  This problem is same as Fibbonaacci Series
     int n = 3;
     vector<int> arr;
     int K = n; // Total number of Stairs
