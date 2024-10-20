@@ -28,7 +28,7 @@ void AllPermutations(vector<int> ArrList,map<int,int> ArrMap,vector<int> arr)
 {
     //cout << "-----------" << __FUNCTION__ << "-----------" << endl;
     int n = arr.size();
-    int k = ArrMap.size();
+    int k = ArrList.size();
     if(n==k)
     {
         print_v(ArrList);
@@ -60,7 +60,7 @@ void AllPermutations(vector<int> ArrList,map<int,int> ArrMap,vector<int> arr)
 void AllPermutationsForString(vector<char> ArrList,map<char,int> ArrMap,vector<char> arr)
 {
     int n = arr.size();
-    int k = ArrMap.size();
+    int k = ArrList.size();
     if(n==k)
     {
         print_v_char(ArrList);
