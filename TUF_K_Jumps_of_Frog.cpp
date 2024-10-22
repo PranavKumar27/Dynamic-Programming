@@ -16,7 +16,7 @@ void print_v(vector<int> v)
 
 int frogKJumps(int index,vector<int>ht,int k) // Top to bottom Jump
 {
-    if(index==0)
+    if(index==0) // In order to reach 0 from 0 we need 0 step
     {
         return 0;
     }
@@ -39,7 +39,7 @@ int frogKJumps(int index,vector<int>ht,int k) // Top to bottom Jump
 
 int frogKJumps_Using_Memoization(int index,vector<int>ht,int k,vector<int>& dp) // Top to bottom Jump
 {
-    if(index==0)
+    if(index==0) // In order to reach 0 from 0 we need 0 step
     {
         return 0;
     }
@@ -69,7 +69,7 @@ int frogKJumps_Using_Tabulation(vector<int>ht,int k) // Top to bottom Jump
     int n= ht.size();
     vector<int> dp(n+1);
 
-    dp[0]=0;
+    dp[0]=0; // In order to reach 0 from 0 we need 0 step
 
     for(int index=1;index<n;index++)
     {
@@ -91,6 +91,38 @@ int frogKJumps_Using_Tabulation(vector<int>ht,int k) // Top to bottom Jump
     return dp[n-1];
 }
 
+int frogKJumps_Using_Tabulation_SpaceOptimalK(vector<int>ht,int k) // Top to bottom Jump
+{
+    int n= ht.size();
+    vector<int> Prev(k,0);
+
+    for(int index=1;index<n;index++)
+    {
+        int min_jump_energy = INT_MAX;
+        for(int j=1;j<=k;j++)
+        {
+            int new_val = INT_MAX;
+
+            if(index-j>=0)
+            {
+                new_val = Prev[k-j]+abs(ht[index-j]-ht[index]);
+            }
+            min_jump_energy = min(min_jump_energy,new_val);
+        }
+
+        for(int i=0;i<k-1;i++)
+        {
+            Prev[i] = Prev[i+1];
+        }
+        Prev[k-1] = min_jump_energy;
+        cout << "min_jump_energy =" << min_jump_energy << " for index=" << index << endl;
+        //dp[index]=min_jump_energy;//+abs(ht[index-1]-ht[index]);
+    }
+    print_v(Prev);
+    return Prev[k-1];
+}
+
+
 int main()
 {
     /*
@@ -109,16 +141,24 @@ int main()
     int k=2;
     vector<int> dp(n+1,-1);
     int minEneryLost = frogKJumps_Using_Memoization(n,ht,k,dp);
-    cout << "Min Energy Lost if Frog Jumps K =" << k << " steps =" << minEneryLost << endl;
+    cout << "Min Energy Lost if Frog Jumps K Using_Memoization =" << k << " steps =" << minEneryLost << endl;
 
-    */
+
     vector<int> ht = {30,10,60,10,60,50};
 
     int n = 5;
     int k=2;
-    vector<int> dp(n+1,-1);
     int minEneryLost = frogKJumps_Using_Tabulation(ht,k);
-    cout << "Min Energy Lost if Frog Jumps K =" << k << " steps =" << minEneryLost << endl;
+    cout << "Min Energy Lost if Frog Jumps K  Using_Tabulation=" << k << " steps =" << minEneryLost << endl;
+
+    */
+
+    vector<int> ht = {30,10,60,10,60,50};
+
+    int n = 5;
+    int k=2;
+    int minEneryLost = frogKJumps_Using_Tabulation_SpaceOptimalK(ht,k);
+    cout << "Min Energy Lost if Frog Jumps K  Using SpaceOptimalK =" << k << " steps =" << minEneryLost << endl;
 
     return 0;
 }
