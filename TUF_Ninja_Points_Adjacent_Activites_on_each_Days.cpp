@@ -9,8 +9,9 @@ void print_v(vector<int> v)
 {
     for(auto d:v)
     {
-        cout << d << endl;
+        cout << d << ",";
     }
+    cout << endl;
 }
 
 void print_2Dv(vector<vector<int>> _2DV)
@@ -157,22 +158,122 @@ int NinjaTrainingPoints_Top_Down_Memoization(vector<vector<int>>Training,int row
     return maxi;
 }
 
+int max_in_vector(vector<int> v,int last=INT_MAX)
+{
+    int maxi = INT_MIN;
+    for(int i=0;i<v.size();i++)
+    {
+        if(i!=last)
+        {
+            maxi = max(maxi,v[i]);
+        }
+    }
+    return maxi;
+}
+
+int NinjaTrainingPoints_Bottom_Up_Tabulation(vector<vector<int>> Training)
+{
+    int days = Training.size();
+    int activites = Training[0].size();
+    vector<vector<int>> dp(days,vector<int>(activites+1,-1));
+
+    for(int i=0;i<activites+1;i++)
+    {
+        dp[0][i] = max_in_vector(Training[0],i);
+    }
+
+    int max_points=INT_MIN;
+    for(int day=1;day<days;day++)
+    {
+        for(int last=0;last<activites+1;last++)
+        {
+            dp[day][last] = 0;
+            int maxk = INT_MIN;
+            for(int activity=0;activity<activites;activity++)
+            {
+                if(activity!=last)
+                {
+                    int points = Training[day][activity]+dp[day-1][activity];
+                    maxk = max(maxk,points);
+                }
+            }
+            dp[day][last] = maxk;
+        }
+        //max_points = max(max_points,max_in_vector(dp[day]));
+    }
+
+    return dp[days-1][activites];
+
+
+}
+
+int NinjaTrainingPoints_Bottom_Up_Space_Optimized(vector<vector<int>> Training)
+{
+    int days = Training.size();
+    int activites = Training[0].size();
+    vector<int> Prev(activites+1,-1);
+
+    for(int i=0;i<activites+1;i++)
+    {
+        Prev[i] = max_in_vector(Training[0],i);
+    }
+
+    for(int day=1;day<days;day++)
+    {
+        print_v(Prev);
+        vector<int> Temp(activites+1,0);
+        for(int last=0;last<activites+1;last++)
+        {
+            cout << "-----------" << endl;
+            int maxk = INT_MIN;
+            for(int activity=0;activity<activites;activity++)
+            {
+                cout << "activity =" << activity << endl;
+                if(activity!=last)
+                {
+                    //cout << "activity =" << activity << endl;
+                    cout << "Prev[activity] =" << Prev[activity] << endl;
+                    cout << "Training[day][activity]=" << Training[day][activity] << endl;
+                    int points = Training[day][activity]+Prev[activity];
+                    cout << "points=" << points << endl;
+                    maxk = max(maxk,points);
+                }
+            }
+            cout << "-----------" << endl;
+            Temp[last] = maxk;
+        }
+        Prev = Temp;
+    }
+    print_v(Prev);
+    return Prev[activites];
+
+
+}
+
 int main()
 {
     //vector<vector<int>> Training = {{10,50,1},{5,100,11}};
 
-    vector<vector<int>> Training = {{2,1,3},{3,4,6},{10,1,6},{8,3,7}};
-    vector<vector<int>> dp(Training.size()+1,vector<int>(Training[0].size(),-1));
+    vector<vector<int>> Training = {{3,2,1},{4,2,3},{7,6,8},{2,1,7}};
+    vector<vector<int>> dp(Training.size()+1,vector<int>(Training[0].size()+1,-1));
 
-    vector<vector<int>> dp2(Training.size()+1,vector<int>(Training[0].size(),-1));
+    vector<vector<int>> dp2(Training.size()+1,vector<int>(Training[0].size()+1,-1));
 
-    int Max_training_value = NinjaTrainingValue_Bottom_Up_Memoization(0,Training,0,3,dp);
 
-    int Max_training_Points = NinjaTrainingPoints_Top_Down_Memoization(Training,Training.size()-1,3,dp2);
+    int ans_Tab = NinjaTrainingPoints_Bottom_Up_Tabulation(Training);
+    cout << "Max_training_value for Ninja Training Points Bottom Up Tabulation = "<< ans_Tab << endl;
+
+     int ans_Space_Optimized = NinjaTrainingPoints_Bottom_Up_Space_Optimized(Training);
+    cout << "Max_training_value for Ninja Training Points Bottom Up ans_Space_Optimized = "<< ans_Space_Optimized << endl;
+
+
+    //int Max_training_value = NinjaTrainingValue_Bottom_Up_Memoization(0,Training,0,3,dp);
+
+    //int Max_training_Points = NinjaTrainingPoints_Top_Down_Memoization(Training,Training.size()-1,3,dp2);
 
     //print_2Dv(dp);
-    cout << "Max_training_value for Ninja Training Value Bottom Up= "<< Max_training_value << endl;
+    //cout << "Max_training_value for Ninja Training Value Bottom Up= "<< Max_training_value << endl;
 
-    cout << "Max_training_value for Ninja Training Points Top Down = "<< Max_training_Points << endl;
+    //cout << "Max_training_value for Ninja Training Points Top Down = "<< Max_training_Points << endl;
     return 0;
 }
