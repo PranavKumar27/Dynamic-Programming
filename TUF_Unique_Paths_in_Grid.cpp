@@ -3,6 +3,15 @@
 
 using namespace std;
 
+void print_v(vector<int> v)
+{
+    for(auto d:v)
+    {
+        cout << d << ",";
+    }
+    cout << endl;
+}
+
 /// TC = 2^(m*n)
 /// SC = O(path Length)
 int uniqueGridPaths(int row,int col,vector<vector<int>> Grid)
@@ -82,7 +91,7 @@ int uniqueGridPaths_Tabulation(vector<vector<int>> Grid)
             if(c>=1)
              right_path = dp[r][c-1];
 
-             cout << "down=" << down_path << " right=" << right_path << endl;
+             //cout << "down=" << down_path << " right=" << right_path << endl;
 
             dp[r][c] = down_path+right_path;
         }
@@ -112,29 +121,40 @@ int uniqueGridPaths_SpaceOptimization(vector<vector<int>> Grid)
 
     vector<int> Prev(cGrid,0);
 
-    vector<vector<int>> Current(rGrid,vector<int>(cGrid,0));
-
-    Current[0][0] = 1;
-
+    //print_v(Prev);
     for(int r=0;r<rGrid;r++)
     {
-        vector<int> temp(rGrid,0);
+        vector<int> Current(cGrid,0);
         for(int c=0;c<cGrid;c++)
         {
-            if(r==0 && c==0) continue;
-            temp[c] = 
-            Current[r][c] = Prev[c]+Current[r][c-1];
+            if(r==0 && c==0)  ///Base Case No of ways once Node reaches 0,0 is 1 Always
+            {
+                Current[c] = 1;
+                continue;
+            }
+            else
+            {
+                if(c>0)
+                    Current[c] = Prev[c] + Current[c-1];  ///if col>1 then only we can move left of the current node Hence checked
+                else
+                    Current[c] = Prev[c];  ///If col = 0 , current node can only move row-1 and we have Prev data there so Use it Here
+            }
         }
-        Prev = Current[r];
+        Prev = Current;
+        print_v(Prev);
     }
 
-    return Current[rGrid-1][cGrid-1];
+    //print_v(Prev);
+    return Prev[cGrid-1];
 }
 
 
 int main()
 {
+
     vector<vector<int>> Grid = { {1,1,1},{1,1,1},{1,1,1} };
+
+
     int uniquePaths = uniqueGridPaths(2,2,Grid);
     cout << "No of unique Paths from 0,0 to m,n =" << uniquePaths << endl;
 
@@ -144,7 +164,6 @@ int main()
 
     int uniquePaths_Tabulation = uniqueGridPaths_Tabulation(Grid);
     cout << "No of unique Paths from 0,0 to m,n Using Tabulation =" << uniquePaths_Tabulation << endl;
-
 
     int uniquePaths_Space = uniqueGridPaths_SpaceOptimization(Grid);
     cout << "No of unique Paths from 0,0 to m,n Using Space =" << uniquePaths_Space << endl;
