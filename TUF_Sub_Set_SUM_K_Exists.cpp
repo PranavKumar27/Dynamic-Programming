@@ -157,12 +157,9 @@ int SumKSubsequncesExist_Tabulation(vector<int> arr,int targetSum,int n)
 
     if(arr[0]==targetSum)
     {
-        dp[0][targetSum] = true;
+        dp[arr[0]][targetSum] = true;
     }
-    else
-    {
-        dp[0][targetSum] = false;
-    }
+    
 
     print_2D_v(dp);
 
