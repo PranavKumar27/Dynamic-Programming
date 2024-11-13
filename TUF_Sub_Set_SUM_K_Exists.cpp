@@ -144,41 +144,46 @@ int SumKSubsequncesExist_Memo(int index,int targetSum,vector<int> arr,vector<vec
 
 int SumKSubsequncesExist_Tabulation(vector<int> arr,int targetSum,int n)
 {
-    vector<vector<bool>> dp(n+1,vector<bool>(targetSum+1,false));
-    // 1 Means True 0 Means False
+    vector<vector<bool>> dp(n,vector<bool>(targetSum+1,false));
+    // 1 Means True 2 Means False
 
-    for(int i=0;i<n+1;i++)
+    for(int i=0;i<n;i++)
     {
         dp[i][0] = true; // True
-
     }
 
     print_2D_v(dp);
 
-    //if(index==0)
+    //if(arr[0]==targetSum) Not Needed Here Since we Read Arr from index 1 
+    // so we need to set dp[0][arr[0]] as true Always so that index =1 of dp can use it
     {
+        cout << "Setting True" << endl;
         dp[0][arr[0]] = true;
     }
-    
 
     print_2D_v(dp);
 
-    for(int i=1;i<n+1;i++)
+    for(int index=1;index<n;index++)
     {
-        for(int j=1;j<targetSum+1;j++)
+        for(int target=1;target<targetSum+1;target++)
         {
-            int not_take = dp[i-1][j];
+            // Previous Row value (index-1) Same target Col
+            int not_take = dp[index-1][target];
+            
             int take = false;
-            if(arr[i]<=j)
+            if(arr[index]<=target)
             {
-                take = dp[i-1][j-arr[i]];
+                // Previous Row value (index-1), Target is modified by
+                // subtracting included arr[i] from target target-arr[index]
+                take = dp[index-1][target-arr[index]];  
+                
             }
-            dp[i][j] = (take || not_take);
+            dp[index][target] = (take | not_take);
         }
     }
 
     print_2D_v(dp);
-    return dp[n][targetSum];
+    return dp[n-1][targetSum];
 }
 
 int SumKSubsequncesExist_Space_Optimized(vector<int> arr,int targetSum,int n)
