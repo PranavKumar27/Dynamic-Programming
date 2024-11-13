@@ -108,7 +108,7 @@ bool SumKSubsequncesExist(int index,int targetSum,vector<int> arr)
 
 int SumKSubsequncesExist_Memo(int index,int targetSum,vector<int> arr,vector<vector<int>>& dp)
 {
-    // 1 Means True 2 Means False
+    // 1 Means True 0 Means False
     if(targetSum == 0)
     {
         return dp[index][targetSum] = 1;
@@ -118,7 +118,7 @@ int SumKSubsequncesExist_Memo(int index,int targetSum,vector<int> arr,vector<vec
         if(arr[index]==targetSum)
             return dp[index][targetSum] = 1;
         else
-            return dp[index][targetSum] = 2;
+            return dp[index][targetSum] = 0;
     }
 
     if(dp[index][targetSum]!=-1)
@@ -137,7 +137,7 @@ int SumKSubsequncesExist_Memo(int index,int targetSum,vector<int> arr,vector<vec
     if(take==1||not_take==1)
         dp[index][targetSum] = 1;
     else
-        dp[index][targetSum] = 2;
+        dp[index][targetSum] = 0;
     return dp[index][targetSum];
 }
 
@@ -145,7 +145,7 @@ int SumKSubsequncesExist_Memo(int index,int targetSum,vector<int> arr,vector<vec
 int SumKSubsequncesExist_Tabulation(vector<int> arr,int targetSum,int n)
 {
     vector<vector<bool>> dp(n+1,vector<bool>(targetSum+1,false));
-    // 1 Means True 2 Means False
+    // 1 Means True 0 Means False
 
     for(int i=0;i<n+1;i++)
     {
