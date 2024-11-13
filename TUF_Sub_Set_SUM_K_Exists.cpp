@@ -188,36 +188,30 @@ int SumKSubsequncesExist_Tabulation(vector<int> arr,int targetSum,int n)
 
 int SumKSubsequncesExist_Space_Optimized(vector<int> arr,int targetSum,int n)
 {
-    vector<bool> Prev(targetSum+1);
-    vector<bool> Current(targetSum+1);
+    vector<bool> Prev(targetSum+1,false);
+    vector<bool> Current(targetSum+1,false);
 
 
     Prev[0] = true; // True
 
     print_1D_v(Prev);
 
-    if(arr[0]==targetSum)
-    {
-        Prev[targetSum] = true;
-    }
-    else
-    {
-        Prev[targetSum] = false;
-    }
+    Prev[arr[0]] = true;
+
 
     print_1D_v(Prev);
 
-    for(int i=1;i<n+1;i++)
+    for(int index=1;index<n+1;index++)
     {
-        for(int j=1;j<targetSum+1;j++)
+        for(int target=1;target<targetSum+1;target++)
         {
-            int not_take = Prev[j];
+            int not_take = Prev[target];
             int take = false;
-            if(arr[i]<=j)
+            if(arr[index]<=target)
             {
-                take = Prev[j-arr[i]];
+                take = Prev[target-arr[index]];
             }
-            Current[j] = (take || not_take);
+            Current[target] = (take || not_take);
         }
         Prev = Current;
     }
