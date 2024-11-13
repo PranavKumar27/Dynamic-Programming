@@ -111,14 +111,14 @@ int SumKSubsequncesExist_Memo(int index,int targetSum,vector<int> arr,vector<vec
     // 1 Means True 0 Means False
     if(targetSum == 0)
     {
-        return dp[index][targetSum] = 1;
+        return 1;
     }
     if(index == 0)
     {
         if(arr[index]==targetSum)
-            return dp[index][targetSum] = 1;
+            return 1;
         else
-            return dp[index][targetSum] = 0;
+            return 0;
     }
 
     if(dp[index][targetSum]!=-1)
