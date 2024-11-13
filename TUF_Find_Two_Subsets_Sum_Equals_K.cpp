@@ -73,7 +73,8 @@ bool IsSumKPossible_Tabu(vector<int>arr,int targetSum)
     for(int i=0;i<n;i++)
         dp[i][targetSum] = true;
 
-    dp[0][arr[0]] = true;
+    if(arr[0]<=targetSum)
+        dp[0][arr[0]] = true;
 
     for(int index = 1;index<n;index++)
     {
@@ -102,7 +103,8 @@ bool IsSumKPossible_Space_Optimized(vector<int>arr,int targetSum)
     for(int i=0;i<n;i++)
         Prev[targetSum] = true;
 
-    Prev[arr[0]] = true;
+    if(arr[0]<=targetSum)
+        Prev[arr[0]] = true;
 
     for(int index = 1;index<n;index++)
     {
