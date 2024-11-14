@@ -83,8 +83,8 @@ bool IsSumKPossible_Tabu(vector<int>arr,int targetSum)
             bool not_take = dp[index-1][target];
 
             bool take = false;
-            if(arr[index]<=targetSum)
-                take = dp[index-1][targetSum-arr[index]];
+            if(arr[index]<=target)
+                take = dp[index-1][target-arr[index]];
 
             dp[index][target] = take|not_take;
         }
@@ -112,8 +112,8 @@ bool IsSumKPossible_Space_Optimized(vector<int>arr,int targetSum)
             bool not_take = Prev[target];
 
             bool take = false;
-            if(arr[index]<=targetSum)
-                take = Prev[targetSum-arr[index]];
+            if(arr[index]<=target)
+                take = Prev[target-arr[index]];
 
             Current[target] = take|not_take;
         }
@@ -192,7 +192,7 @@ int main()
         }
         else
         {
-            cout << "TabulationCan't Divide into 2 Equal Sets of Equal Sum" << endl;
+            cout << "Tabulation Can't Divide into 2 Equal Sets of Equal Sum" << endl;
         }
 
         if(ans_Full_Sum_Space && ans_Half_Sum_Space)
@@ -201,7 +201,7 @@ int main()
         }
         else
         {
-            cout << "TabulationCan't Divide into 2 Equal Sets of Equal Sum" << endl;
+            cout << "Tabulation Can't Divide into 2 Equal Sets of Equal Sum" << endl;
         }
     }
     return 0;
