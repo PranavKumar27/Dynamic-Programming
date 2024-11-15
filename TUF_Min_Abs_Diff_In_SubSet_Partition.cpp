@@ -37,7 +37,7 @@ int min_abs_diff_SubSet_Partition(vector<int> arr)
     }
 
     // Base Case 2, If sum required is arr[0]
-    if(arr[0]]<=total_sum)
+    if(arr[0]<=total_sum)
         dp[0][arr[0]] = true;
 
     for(int index=1;index<n;index++)
