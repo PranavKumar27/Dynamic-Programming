@@ -114,16 +114,18 @@ int countSubSetsSumK_Tabu(vector<int> arr,int targetSum)
     int n = arr.size();
     vector<vector<int>> dp(n,vector<int>(targetSum+1,0));
 
-    for(int i=0;i<n;i++)
-    {
-        dp[i][0]=1;
-    }
-
     if(arr[0]==0)
     {
-        dp[0][arr[0]] = 2;
+        dp[0][0] = 2;
     }
-    else if(arr[0]<=targetSum)
+    else
+    {
+        dp[0][0]=1;
+    }
+
+
+
+    if(arr[0]!=0 && arr[0]<=targetSum)
     {
         dp[0][arr[0]] = 1;
     }
@@ -151,6 +153,49 @@ int countSubSetsSumK_Tabu(vector<int> arr,int targetSum)
     return dp[n-1][targetSum];
 }
 
+int countSubSetsSumK_Space_Optimized(vector<int> arr,int targetSum)
+{
+    int n = arr.size();
+    vector<int> Prev(targetSum+1,0);
+    vector<int> Current(targetSum+1,0);
+
+    if(arr[0]==0)
+    {
+        Prev[0] = 2;
+    }
+    else
+    {
+        Prev[0]=1;
+    }
+
+
+
+    if(arr[0]!=0 && arr[0]<=targetSum)
+    {
+        Prev[arr[0]] = 1;
+    }
+
+
+    for(int index=1;index<n;index++)
+    {
+        for(int target=0;target<targetSum+1;target++)
+        {
+            int not_take = Prev[target];
+
+            int take = 0;
+            if(arr[index]<=target)
+            {
+               take = Prev[target - arr[index]];
+            }
+
+            Current[target] = take + not_take;
+        }
+        Prev = Current;
+    }
+
+    return Prev[targetSum];
+}
+
 
 int findSum(vector<int> arr)
 {
@@ -162,7 +207,7 @@ int findSum(vector<int> arr)
 
 int main()
 {
-    vector<int> arr ={2,5,6,4};
+    vector<int> arr ={0,2,5,6,4};
     int K = 3;
     int totalSum = findSum(arr);
     int S1 = (totalSum - K)/2;
@@ -180,6 +225,10 @@ int main()
 
     int ans_Tabu = countSubSetsSumK_Tabu(arr,S1);
     cout <<" countSubSetsSumK Using Tabu= " << ans_Tabu << endl;
+
+
+    int ans_Space = countSubSetsSumK_Space_Optimized(arr,S1);
+    cout <<" countSubSetsSumK Using Space_Optimized= " << ans_Space << endl;
 
     return 0;
 }
