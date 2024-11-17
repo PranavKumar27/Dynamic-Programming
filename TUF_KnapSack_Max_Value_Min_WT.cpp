@@ -40,8 +40,8 @@ int maxValueInBag_knapsack(vector<int> wt,vector<int> value,int index, int wt_le
 
 int maxValueInBag_knapsack_Memo(vector<int> wt,vector<int> value,int index, int wt_left,vector<vector<int>>& dp)
 {
-    if(wt_left<0)
-        return 0;
+    if(wt_left<0) // Wt can never become negative since before taking wt we check that wt[index]<=wt_left
+        return 0; 
     if(index==0)
     {
         // All items tried to pick and tested
