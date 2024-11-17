@@ -114,7 +114,7 @@ int maxValueInBag_knapsack_Space(vector<int> wt,vector<int> value,int Bag_Capaci
     for(int index=1;index<n;index++)
     {
         for(int wt_left=Bag_Capacity;wt_left>=0;wt_left--) // Read from Right to left
-        // We need values from left of Prev and it is intact in this case too
+        // We need values from left of Prev row and it is intact in this case too
         {
             int not_take = Prev[wt_left];
             //cout << "not_take" << not_take << endl;
