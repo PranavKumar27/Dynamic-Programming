@@ -317,8 +317,8 @@ int main()
     cout << "--------------------------\n"<< endl;
 
 
-    vector<vector<int>> dp1(n1,vector<int>(n2,-1));
-    ans = findLongestSubsequence_1Based_Index(s1,s2,n1-1,n2-1,{},max_lcs,dp1);
+    vector<vector<int>> dp1(n1+1,vector<int>(n2+1,-1));
+    ans = findLongestSubsequence_1Based_Index(s1,s2,n1,n2,{},max_lcs,dp1);
     cout << "findLongestSubsequence 1Based_Index Using dp=" << ans << endl;
     print_1D_char_array(max_lcs);
     cout << "--------------------------\n"<< endl;
