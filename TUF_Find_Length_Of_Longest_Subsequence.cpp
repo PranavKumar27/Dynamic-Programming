@@ -98,9 +98,9 @@ int findLongestSubsequence_1Based_Index(string& s1,string& s2,int index1,
         return dp[index1][index2];
     }
 
-    if(s1[index1]==s2[index2])
+    if(s1[index1-1]==s2[index2-1])
     {
-        lcs.push_back(s1[index1]);
+        lcs.push_back(s1[index1-1]);
         if(lcs.size()>max_lcs.size())
         {
             max_lcs = lcs;
@@ -185,7 +185,7 @@ int findLongestSubsequence_1Based_Index(string& s1,string& s2,vector<char> max_l
         {
             // index1 and index2 is Always > 0
 
-            if(s1[index1]==s2[index2])
+            if(s1[index1-1]==s2[index2-1])
             {
                 dp[index1][index2] = 1+dp[index1-1][index2-1];
             }
@@ -273,7 +273,7 @@ int findLongestSubsequence_1Based_Index_Space(string& s1,string& s2,vector<char>
         {
             // index1 and index2 is Always > 0
 
-            if(s1[index1]==s2[index2])
+            if(s1[index1-1]==s2[index2-1])
             {
                 Curr[index2] = 1+Prev[index2-1];
             }
