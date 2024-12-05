@@ -81,14 +81,56 @@ int maxProfitInStocks(int index,int isBought,vector<int> SPrices,vector<vector<i
     {
         profit = max ( SPrices[index]+maxProfitInStocks(index+1,0,SPrices,dp) ,
                         0 + maxProfitInStocks(index+1,isBought,SPrices,dp) );
+
     }
     else
     {
         profit = max( -SPrices[index]+maxProfitInStocks(index+1,1,SPrices,dp),
                         0 + maxProfitInStocks(index+1,isBought,SPrices,dp) );
+        cout << "index =" << index << " Profit=" << profit << endl;
     }
 
     return dp[index][isBought] = profit;
+}
+
+int maxProfitInStocks(vector<int> SPrices)
+{
+    int m = SPrices.size();
+    vector<vector<int>> dp(m+1,vector<int>(2,-1));
+
+    for(int j=0;j<2;j++)
+        dp[m][j]=0;
+
+
+    // isBought = true means stock is held and can only be sold now
+    // isBought = false means no stock is held and can only be Buy Stock now
+
+    for(int index=m-1;index>=0;index--)
+    {
+        for(int isBought=0;isBought<2;isBought++)
+        {
+            int profit = 0;
+            if(isBought) // isBought = 1
+            {
+                profit = max ( SPrices[index]+dp[index+1][0] ,
+                                0 + dp[index+1][isBought] );
+                cout << "index =" << index << " Profit=" << profit << endl;
+                dp[index][isBought] = profit;
+                //break;
+            }
+            else
+            {
+                profit = max( -SPrices[index]+dp[index+1][1] ,
+                                0 + dp[index+1][isBought] );
+                cout << "index =" << index << " Profit=" << profit << endl;
+                dp[index][isBought] = profit;
+                //break;
+            }
+
+        }
+    }
+    print_2D_int_array(dp);
+    return dp[0][1];
 }
 
 int main()
@@ -102,6 +144,9 @@ int main()
     ans = maxProfitInStocks(0,0,SPrices,dp);
     print_2D_int_array(dp);
     cout << "Max - Profit -- InStocks Using Memoization=" << ans << endl;
+
+    ans = maxProfitInStocks(SPrices);
+    cout << "Max - Profit -- InStocks Using Tabulation=" << ans << endl;
 
     return 0;
 }
