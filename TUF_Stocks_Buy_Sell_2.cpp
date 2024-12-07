@@ -130,7 +130,49 @@ int maxProfitInStocks(vector<int> SPrices)
         }
     }
     print_2D_int_array(dp);
-    return dp[0][1];
+    return dp[0][0];
+}
+
+int maxProfitInStocks_Space(vector<int> SPrices)
+{
+    int m = SPrices.size();
+    vector<int> Next(2,-1);
+    vector<int> Cur(2,-1);
+
+    for(int j=0;j<2;j++)
+        Next[j]=0;
+
+
+    // isBought = true means stock is held and can only be sold now
+    // isBought = false means no stock is held and can only be Buy Stock now
+
+    for(int index=m-1;index>=0;index--)
+    {
+        for(int isBought=0;isBought<2;isBought++)
+        {
+            int profit = 0;
+            if(isBought) // isBought = 1
+            {
+                profit = max ( SPrices[index]+Next[0] ,
+                                0 + Next[isBought] );
+                cout << "index =" << index << " Profit=" << profit << endl;
+                Cur[isBought] = profit;
+                //break;
+            }
+            else
+            {
+                profit = max( -SPrices[index]+Next[1] ,
+                                0 + Next[isBought] );
+                cout << "index =" << index << " Profit=" << profit << endl;
+                Cur[isBought] = profit;
+                //break;
+            }
+
+        }
+        Next = Cur;
+    }
+    print_1D_int_array(Next);
+    return Next[0];
 }
 
 int main()
@@ -147,6 +189,9 @@ int main()
 
     ans = maxProfitInStocks(SPrices);
     cout << "Max - Profit -- InStocks Using Tabulation=" << ans << endl;
+
+    ans = maxProfitInStocks_Space(SPrices);
+    cout << "Max - Profit -- InStocks Using Space Optimization=" << ans << endl;
 
     return 0;
 }
