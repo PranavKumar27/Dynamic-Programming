@@ -35,9 +35,6 @@ Condition : One can have 1 stock in hand,
             One can either buy or sell stock in a day, Can't do both
             Once someone has stock, First it has to be sold,
             then only on the next day stocks can be bought
-
-Note Start from Canbuy as true It means you can start with Empty Container of stocks
-If you start with CanBuy as false, It means you are holding stock already and wants to start from Selling the stock
 */
 
 
@@ -114,7 +111,7 @@ int maxProfitInStocks(vector<int> SPrices)
             else
             {
                profit = max ( SPrices[index]+dp[index+1][1], // Can Buy since sold
-                             0 + dp[index+1][1] ); // Can sell Only
+                             0 + dp[index+1][0] ); // Can sell Only
             }
             dp[index][canBuy] = profit;
         }
@@ -146,7 +143,7 @@ int maxProfitInStocks_Space(vector<int> SPrices)
             else
             {
                profit = max ( SPrices[index]+Next[1] , // Can Buy since sold
-                             0 + Next[1] ); // Can sell Only
+                             0 + Next[0] ); // Can sell Only
             }
             Cur[canBuy] = profit;
 
@@ -155,6 +152,32 @@ int maxProfitInStocks_Space(vector<int> SPrices)
     }
     print_1D_int_array(Next);
     return Next[1];
+}
+
+
+int maxProfitInStocks_Space_Sol2(vector<int> SPrices)
+{
+    int m = SPrices.size();
+
+    int curBuy,curNotBuy,NextBuy,NextNotBuy;
+    NextNotBuy = NextBuy = 0;
+
+    // Buy = 1 , NotBuy = 0
+
+
+    for(int index=m-1;index>=0;index--)
+    {
+
+        curBuy = max( -SPrices[index]+NextNotBuy, // Can sell since bought
+                             0 + NextBuy ); // Can buy Only
+
+        curNotBuy = max ( SPrices[index]+NextBuy , // Can Buy since sold
+                             0 + NextNotBuy ); // Can sell Only
+
+        NextBuy = curBuy;
+        NextNotBuy = curNotBuy;
+    }
+    return NextBuy;
 }
 
 int main()
@@ -174,6 +197,9 @@ int main()
 
     ans = maxProfitInStocks_Space(SPrices);
     cout << "Max - Profit -- InStocks Using Space Optimization=" << ans << endl;
+
+    ans = maxProfitInStocks_Space_Sol2(SPrices);
+    cout << "Max - Profit -- InStocks Using Space Optimization Sol 2=" << ans << endl;
 
     return 0;
 }
