@@ -3,6 +3,29 @@
 
 using namespace std;
 
+
+/*
+If someone buys stock and sells it, he can either earn Profit or loss
+Again if he buys new stocks and sells but in each Sell He has to subtract the Processing fee 
+it he again can earn Profit or loss. Fee can be paid upfront during buying as well but not 
+at buying as well as selling
+Now in given set if some-one can buy 1 stock at time and can hold only 1 stock,
+then find the maximum Profit for the entire Set
+eg : Stock Prices 3 3 5 0 0 3 1 4
+if some buys stocks at 3 on day1 and sold at 5 on day2, Profit = 2
+    Again he buys stocks at 1 on day6 and sold at 4 on day7, Profit = 3
+        Overall Profit = 5 - 2(fee) = 3
+
+    So Max Profit Possible is 3
+
+Condition : One can have 1 stock in hand,
+            One can either buy or sell stock in a day, Can't do both
+            Once someone has stock, First it has to be sold,
+            then only on the next day stocks can be bought
+** We can Buy and Sell Stocks any No Of times
+No of transactions are unlimited
+*/
+
 //Recursion TC --> O(2^N)
 // SC --> O(N) Recursion Stack
 int max_profit(int index,int canBuy,vector<int>& StockPriceList,int fee)
