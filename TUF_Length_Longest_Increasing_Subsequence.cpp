@@ -90,7 +90,7 @@ int findLIS(int index,int prev_index,vector<int>& ArrList,vector<vector<int>>& d
     if(index==n)
         return 0;
 
-    if(dp[index][prev_index]!=-1)
+    if(dp[index][prev_index+1]!=-1)
     {
         return dp[index][prev_index+1];
     }
@@ -102,6 +102,73 @@ int findLIS(int index,int prev_index,vector<int>& ArrList,vector<vector<int>>& d
 
     return dp[index][prev_index+1] = max(take_len,not_take_len);
 }
+
+
+int findLIS(vector<int>& ArrList)
+{
+    int n = ArrList.size();
+    vector<vector<int>> dp(n+1,vector<int>(n+1,-1));
+
+    for(int prev_index=n-1;prev_index>=-1;prev_index--)
+    {
+        dp[n][prev_index+1] = 0;
+    }
+
+
+    for(int index=n-1;index>=0;index--)
+    {
+        for(int prev_index=index-1;prev_index>=-1;prev_index--)
+        {
+            int not_take_len = dp[index+1][prev_index+1];
+
+            int take_len = -1e9;
+            if(prev_index ==-1 || ArrList[index]>ArrList[prev_index])
+                take_len = 1 + dp[index+1][index+1];
+
+            dp[index][prev_index+1] = max(take_len,not_take_len);
+
+        }
+    }
+
+    return dp[0][-1+1];
+
+}
+
+
+
+int findLIS(vector<int>& ArrList,bool IsSpaceOptimized)
+{
+    int n = ArrList.size();
+    vector<int> Next(n+1,-1);
+    vector<int> Cur(n+1,-1);
+
+    for(int prev_idx = 0;prev_idx<n+1;prev_idx++)
+    {
+        Next[prev_idx] = 0;
+    }
+
+
+    for(int index=n-1;index>=0;index--)
+    {
+        for(int prev_index=index-1;prev_index>=-1;prev_index--)
+        {
+            int not_take_len = Next[prev_index+1];
+
+            int take_len = -1e9;
+            if(prev_index ==-1 || ArrList[index]>ArrList[prev_index])
+                take_len = 1 + Next[index+1];
+
+            Cur[prev_index+1] = max(take_len,not_take_len);
+
+        }
+        Next = Cur;
+    }
+
+    return Next[0];
+
+}
+
+
 
 int main()
 {
@@ -122,6 +189,12 @@ int main()
     vector<vector<int>> dp(n+1,vector<int>(n+1,-1));
     ans = findLIS(0,-1,ArrList);
     cout << "Longest_Increasing_Subsequences len Using Sol 2 Memoization =" << ans << endl;
+
+    ans = findLIS(ArrList);
+    cout << "Longest_Increasing_Subsequences len Using Sol 2 Tabulation =" << ans << endl;
+
+    ans = findLIS(ArrList,true);
+    cout << "Longest_Increasing_Subsequences len Using Sol 2 Space Optimized =" << ans << endl;
 
 
     return 0;
