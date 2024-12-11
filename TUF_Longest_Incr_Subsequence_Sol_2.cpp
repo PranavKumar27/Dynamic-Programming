@@ -28,9 +28,9 @@ dp[4] means find the LIS ending at value 16, can we have {5,16}, Ans is Yes , Ne
 Hence Max Possible LIS length is 3 only. Therefore dp[4] = 3
 
 
-dp[5] means find the LIS ending at value 1, can we have {5,8}, Ans is No , New dp[4] = 2
-                                            can we have {4,8}, Ans is No , New dp[4] = 2
-                                            can we have {1,8}, Ans is No, New dp[4] = 2
+dp[5] means find the LIS ending at value 1, can we have {5,8}, Ans is Yes , New dp[4] = 2
+                                            can we have {4,8}, Ans is Yes , New dp[4] = 2
+                                            can we have {1,8}, Ans is Yes, New dp[4] = 2
 
 Hence Max Possible LIS length is 2 only. Therefore dp[5] = 2
 */
