@@ -48,6 +48,8 @@ So Recursion is f(i,j) = A[i-1]*A[k]*A[j] + f(i,k) + f(k+1,j)
 
 if Only 1 Matrix is present No Of Steps of it will be 0
 */
+
+// TC --> Exponential
 int NoOfOperations(int i,int j,vector<int> A)
 {
     if(i==j)
@@ -64,11 +66,39 @@ int NoOfOperations(int i,int j,vector<int> A)
 
 }
 
+// Memoization TC --> O(N*N) * N for inner loop Hence TC -> O(N^3)
+// Space Complexity --> O(N*N) for dp + O(N) for stack
+int NoOfOperations(int i,int j,vector<int> A,vector<vector<int>>& dp)
+{
+    if(i==j)
+        return 0;
+
+    if(dp[i][j]!=-1)
+    {
+        cout << "Returned from dp" << endl;
+        return dp[i][j];
+    }
+    int mini = 1e9;
+    for(int k=i;k<j;k++)
+    {
+        int steps = A[i-1]*A[k]*A[j] + NoOfOperations(i,k,A,dp) + NoOfOperations(k+1,j,A,dp);
+        cout << "steps =" << steps << endl;
+        mini = min(mini,steps);
+    }
+    return dp[i][j] = mini;
+
+}
 int main()
 {
     vector<int> ArrList= {10,20,30,40,50};
-    int j = ArrList.size();
-    int ans = NoOfOperations(1,j-1,ArrList);
+    int n = ArrList.size();
+    int ans = NoOfOperations(1,n-1,ArrList);
     cout << "No of Steps =" << ans << endl;
+
+    vector<vector<int>> dp(n,vector<int>(n,-1));
+    ans = NoOfOperations(1,n-1,ArrList,dp);
+    cout << "No of Steps Using Memoization =" << ans << endl;
+
+
     return 0;
 }
