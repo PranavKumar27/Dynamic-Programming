@@ -1,5 +1,6 @@
 #include <iostream>
 #include <vector>
+#include <iomanip>
 
 using namespace std;
 
@@ -50,6 +51,24 @@ if Only 1 Matrix is present No Of Steps of it will be 0
 */
 
 // TC --> Exponential
+
+void print_1D_v(vector<int> v)
+{
+    for(auto d:v)
+    {
+        cout << setw(5) <<d << " ";
+    }
+    cout << endl;
+}
+
+void print_2D_v(vector<vector<int>> Vv)
+{
+    for(auto v:Vv)
+    {
+        print_1D_v(v);
+    }
+    cout << endl;
+}
 int NoOfOperations(int i,int j,vector<int> A)
 {
     if(i==j)
@@ -82,10 +101,54 @@ int NoOfOperations(int i,int j,vector<int> A,vector<vector<int>>& dp)
     for(int k=i;k<j;k++)
     {
         int steps = A[i-1]*A[k]*A[j] + NoOfOperations(i,k,A,dp) + NoOfOperations(k+1,j,A,dp);
-        cout << "steps =" << steps << endl;
+        //cout << "steps =" << steps << endl;
         mini = min(mini,steps);
     }
+
     return dp[i][j] = mini;
+
+}
+
+int NoOfOperations(vector<int> A)
+{
+    int n = A.size();
+    vector<vector<int>> dp(n,vector<int>(n,0));
+
+    /*
+    // Base Case covered in Value initialized in dp itself as 0
+    for(int i=0;i<n;i++)
+    {
+        dp[i][i]=0;
+    }
+    */
+
+
+
+
+    for(int i=n-1;i>=1;i--)
+    {
+        cout << "==i Starts== " << i << endl;
+        for(int j=i+1;j<n;j++)
+        {
+            cout << "----j Starts---- " << j << endl;
+            int mini = 1e9;
+            for(int k=i;k<j;k++)
+            {
+                cout << "**** k Starts  ***** " << k << endl;
+                int steps = A[i-1]*A[k]*A[j] + dp[i][k] + dp[k+1][j];
+                cout << "steps =" << steps << endl;
+                mini = min(mini,steps);
+                cout << "**** k Ends *****" << endl;
+            }
+            dp[i][j] = mini;
+            cout << "----j Ends ----" << endl;
+        }
+        cout << "=======i Ends =======" << endl;
+    }
+
+
+    print_2D_v(dp);
+    return dp[1][n-1];
 
 }
 int main()
@@ -98,6 +161,11 @@ int main()
     vector<vector<int>> dp(n,vector<int>(n,-1));
     ans = NoOfOperations(1,n-1,ArrList,dp);
     cout << "No of Steps Using Memoization =" << ans << endl;
+
+    print_2D_v(dp);
+
+    ans = NoOfOperations(ArrList);
+    cout << "No of Steps Using Tabulation =" << ans << endl;
 
 
     return 0;
